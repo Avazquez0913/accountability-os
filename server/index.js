@@ -3,6 +3,9 @@
 
 const express = require('express');
 
+//Import the webhook handler function
+const {handleGithubPush} = require('./webhook');
+
 //Create the express application
 const app = express();
 
@@ -15,6 +18,8 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.send('AccountabilityOS Server is running!');
 });
+
+app.post('/webhook', handleGithubPush);
 
 //Start the server port on 3000
 //We will move this to an environment variable later

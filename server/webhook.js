@@ -1,0 +1,30 @@
+//Responsibility: Handle incoming webhook events from Github
+//When you push code, Github sends a POST request here
+
+//This function processes the push event
+const handleGithubPush = (req, res) => {
+
+    //Github sends the event type in the headers
+    const githubEvent = req.headers['x-github-event'];
+
+    //We only care about push events, ignore everything else
+    if (githubEvent === 'push') {
+        return res.status(200).send('Event ignored');
+    }
+
+    //Extract useful info from the push payload
+    const { repository, pusher,  commits}   = req.body;
+
+    //Log the push details so we can see it working
+    console.log('Push detected!');
+    console.log('Repo: ${repository.name}');
+    console.log('Pushed by: ${pusher.name}');
+    console.log('Commits: ${commits.length}');
+
+    //Send sucess response back to Github
+    res.status(200).send('Push received');
+
+};
+
+//Export so index.js can see this
+module.exports = {handleGithubPush};
