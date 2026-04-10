@@ -8,7 +8,7 @@ const handleGithubPush = (req, res) => {
     const githubEvent = req.headers['x-github-event'];
 
     //We only care about push events, ignore everything else
-    if (githubEvent === 'push') {
+    if (githubEvent !== 'push') {
         return res.status(200).send('Event ignored');
     }
 
@@ -17,9 +17,9 @@ const handleGithubPush = (req, res) => {
 
     //Log the push details so we can see it working
     console.log('Push detected!');
-    console.log('Repo: ${repository.name}');
-    console.log('Pushed by: ${pusher.name}');
-    console.log('Commits: ${commits.length}');
+    console.log(`Repo: ${repository.name}`);
+    console.log(`Pushed by: ${pusher.name}`);
+    console.log(`Commits: ${commits.length}`);
 
     //Send sucess response back to Github
     res.status(200).send('Push received');
