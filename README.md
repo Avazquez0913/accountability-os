@@ -1,2 +1,2 @@
 ## Progress Log
-- Day 1: Server and webhook listener built try
+- Day 1: Server and webhook listener built 
