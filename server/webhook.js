@@ -1,6 +1,9 @@
 //Responsibility: Handle incoming webhook events from Github
 //When you push code, Github sends a POST request here
 
+//Import unlock manager
+const {earnUnlock} = require('./modules/unlockManager');
+
 //This function processes the push event
 const handleGithubPush = (req, res) => {
 
@@ -21,6 +24,7 @@ const handleGithubPush = (req, res) => {
     console.log(`Pushed by: ${pusher.name}`);
     console.log(`Commits: ${commits.length}`);
 
+    //Reward the push with 45 minutes of screen time
     //Send sucess response back to Github
     res.status(200).send('Push received');
 
