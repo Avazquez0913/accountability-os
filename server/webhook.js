@@ -25,6 +25,7 @@ const handleGithubPush = (req, res) => {
     console.log(`Commits: ${commits.length}`);
 
     //Reward the push with 45 minutes of screen time
+    earnUnlock('Github Push', 45);
     //Send sucess response back to Github
     res.status(200).send('Push received');
 
