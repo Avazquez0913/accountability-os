@@ -8,6 +8,9 @@ const {handleGithubPush} = require('./webhook');
 
 const {getUnlockState} = require('./modules/unlockManager');
 
+//import the scheduler to start the scheduled tasks
+const {startScheduler} = require('./modules/scheduler');
+
 //Create the express application
 const app = express();
 
@@ -30,9 +33,15 @@ app.get('/status', (req, res) => {
     const status = getUnlockState();
     res.status(200).json(status);
 });
+
 //Start the server port on 3000
 //We will move this to an environment variable later
 const PORT = 3000;
+
+//Start the scheduler to activate scheduled tasks
+startScheduler();
+
+//Start the server
 app.listen(PORT,() => {
     console.log(`Server running on port ${PORT}`);
 });
