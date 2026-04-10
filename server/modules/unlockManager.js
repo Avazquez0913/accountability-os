@@ -1,6 +1,8 @@
 //Responsibility: Track whether the user has earned an unlock today
 //This is the core logic that everything else will connect to
 
+//import timer manager to add minutes when an unlock is earned
+const {addMinutes} = require('./timerManager');
 //store the unlock state in memory for now
 //We will move this to a database later
 let unlockState = {
@@ -16,6 +18,9 @@ const earnUnlock = (reason, minutes) => {
     unlockState.unlockedAt = new Date();
     unlockState.reason = reason;
     unlockState.minutesEarned = minutes;
+
+    //start the timer to count down the earned minutes
+    addMinutes(minutes);
 
     console.log(`Unlock earned! Reason: ${reason} | Minutes: ${minutes}`);
 };
