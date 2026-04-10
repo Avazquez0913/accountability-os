@@ -11,6 +11,9 @@ const {getUnlockState} = require('./modules/unlockManager');
 //import the scheduler to start the scheduled tasks
 const {startScheduler} = require('./modules/scheduler');
 
+//Import time manager to expose timer state
+const {getTimerState} = require('./modules/timerManager');
+
 //Create the express application
 const app = express();
 
@@ -32,6 +35,16 @@ app.post('/webhook/github', handleGithubPush);
 app.get('/status', (req, res) => {
     const status = getUnlockState();
     res.status(200).json(status);
+});
+
+//Responsibility: Return how many minures of screen time are remaining
+app.get('/timer', (req, res) => {
+
+    //Get the current timer state from time manager
+    const timer = getTimerState();
+    
+    //Send it back as JSON
+    res.status(200).json(timer);
 });
 
 //Start the server port on 3000
