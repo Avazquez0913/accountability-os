@@ -6,6 +6,8 @@ const express = require('express');
 //Import the webhook handler function
 const {handleGithubPush} = require('./webhook');
 
+const {getUnlockState} = require('./modules/unlockManager');
+
 //Create the express application
 const app = express();
 
@@ -20,6 +22,14 @@ app.get('/', (req, res) => {
 });
 
 app.post('/webhook/github', handleGithubPush);
+
+//Status route
+//Returns current unlock state as JSON
+//This is what the mobile app will call
+app.get('/status', (req, res) => {
+    const status = getUnlockState();
+    res.status(200).json(status);
+});
 //Start the server port on 3000
 //We will move this to an environment variable later
 const PORT = 3000;

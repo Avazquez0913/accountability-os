@@ -21,7 +21,7 @@ const earnUnlock = (reason, minutes) => {
 };
 
 //Call this to check current unlock status
-const getUnlockStatus = () => {
+const getUnlockState = () => {
     return unlockState;
 };
 
@@ -37,4 +37,4 @@ const resetUnlock = () => {
 };
 
 //Export the functions so other modules can use them
-module.exports = {earnUnlock, getUnlockStatus, resetUnlock};
+module.exports = {earnUnlock, getUnlockState, resetUnlock};
