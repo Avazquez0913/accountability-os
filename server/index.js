@@ -19,11 +19,10 @@ app.get('/', (req, res) => {
     res.send('AccountabilityOS Server is running!');
 });
 
-app.post('/webhook', handleGithubPush);
-
+app.post('/webhook/github', handleGithubPush);
 //Start the server port on 3000
 //We will move this to an environment variable later
 const PORT = 3000;
 app.listen(PORT,() => {
-    console.log('Server running on port ${PORT}');
+    console.log(`Server running on port ${PORT}`);
 });
