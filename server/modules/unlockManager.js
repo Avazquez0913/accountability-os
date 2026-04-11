@@ -34,8 +34,6 @@ const getUnlockState = async () => {
     // Get from Redis
     const data = await redis.get(UNLOCK_KEY);
 
-    console.log('Redis raw data:', data);
-    console.log('Redis data type:', typeof data);
     
     // If nothing stored return default locked state
     if (!data) {
