@@ -45,7 +45,7 @@ const getUnlockState = async () => {
     }
 
     // Redis may return string or object depending on client
-    return typeof data === 'string' ? JSON.parse(data) : data;
+    return data;
 };
 
 // Call this to reset at midnight
