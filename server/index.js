@@ -32,7 +32,7 @@ app.post('/webhook/github', handleGithubPush);
 //Status route
 //Returns current unlock state as JSON
 //This is what the mobile app will call
-app.get('/status', (req, res) => {
+app.get('/status', async (req, res) => {
     const status = getUnlockState();
     res.status(200).json(status);
 });

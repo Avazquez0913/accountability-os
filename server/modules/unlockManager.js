@@ -1,45 +1,60 @@
-//Responsibility: Track whether the user has earned an unlock today
-//This is the core logic that everything else will connect to
+// unlockManager.js
+// Responsibility: Track whether the user has earned an unlock today
+// Now uses Redis for persistence so restarts don't wipe the state
 
-//import timer manager to add minutes when an unlock is earned
-const {addMinutes} = require('./timerManager');
-//store the unlock state in memory for now
-//We will move this to a database later
-let unlockState = {
-    isUnlocked: false,
-    unlockedAt: null,
-    reason: null,
-    minutesEarned: 0
-};
+const { redis } = require('./redisClient');
+const { addMinutes } = require('./timerManager');
 
-//Call this when a valid push is detected
-const earnUnlock = (reason, minutes) => {
-    unlockState.isUnlocked = true;
-    unlockState.unlockedAt = new Date();
-    unlockState.reason = reason;
-    unlockState.minutesEarned = minutes;
+// The key we use to store unlock state in Redis
+const UNLOCK_KEY = 'unlock:state';
 
-    //start the timer to count down the earned minutes
+// Call this when a valid push is detected
+const earnUnlock = async (reason, minutes) => {
+
+    // Build the unlock state object
+    const unlockState = {
+        isUnlocked: true,
+        unlockedAt: new Date().toISOString(),
+        reason: reason,
+        minutesEarned: minutes
+    };
+
+    // Save to Redis so it survives restarts
+    await redis.set(UNLOCK_KEY, JSON.stringify(unlockState));
+
+    // Start the countdown timer with earned minutes
     addMinutes(minutes);
 
     console.log(`Unlock earned! Reason: ${reason} | Minutes: ${minutes}`);
 };
 
-//Call this to check current unlock status
-const getUnlockState = () => {
-    return unlockState;
+// Call this to check current unlock status
+const getUnlockState = async () => {
+
+    // Get from Redis
+    const data = await redis.get(UNLOCK_KEY);
+
+    // If nothing stored return default locked state
+    if (!data) {
+        return {
+            isUnlocked: false,
+            unlockedAt: null,
+            reason: null,
+            minutesEarned: 0
+        };
+    }
+
+    // Redis may return string or object depending on client
+    return typeof data === 'string' ? JSON.parse(data) : data;
 };
 
-//Call this to reset at midnight 
-const resetUnlock = () => {
-    unlockState = {
-        isUnlocked: false,
-        unlockedAt: null,
-        reason: null,
-        minutesEarned: 0
-    };
+// Call this to reset at midnight
+const resetUnlock = async () => {
+
+    // Delete the key from Redis
+    await redis.del(UNLOCK_KEY);
+
     console.log('Unlock state reset for the new day');
 };
 
-//Export the functions so other modules can use them
-module.exports = {earnUnlock, getUnlockState, resetUnlock};
+module.exports = { earnUnlock, getUnlockState, resetUnlock };
