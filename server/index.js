@@ -24,6 +24,9 @@ const app = express();
 //This allows us to read req.body when Github sends us data
 app.use(express.json());
 
+//Enable CORS so the mobile app can connect to this server from a different domain
+app.use(cors());
+
 //Health check route
 //Lets us verify the server is running
 app.get('/', (req, res) => {
@@ -59,7 +62,7 @@ loadTimerState();
 //Start the scheduler to activate scheduled tasks
 startScheduler();
 //Enable CORS so the mobile app can connect to this server
-app.use(cors());
+
 //Start the server
 app.listen(PORT,() => {
     console.log(`Server running on port ${PORT}`);
