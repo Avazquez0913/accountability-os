@@ -4,6 +4,9 @@
 //Import unlock manager
 const {earnUnlock} = require('./modules/unlockManager');
 
+//Import activity manager to log activities
+const {logActivity} = require('./modules/activityManager');
+
 //This function processes the push event
 const handleGithubPush = async (req, res) => {
 
@@ -24,8 +27,10 @@ const handleGithubPush = async (req, res) => {
     console.log(`Pushed by: ${pusher.name}`);
     console.log(`Commits: ${commits.length}`);
 
+    //Log the github push as an activity
+    const activity = await logActivity('github_push');
     //Reward the push with 45 minutes of screen time
-    await earnUnlock('Github Push', 45);
+    await earnUnlock('Github Push', activity.minutes);
     //Send sucess response back to Github
     res.status(200).send('Push received');
 

@@ -14,6 +14,9 @@ const {startScheduler} = require('./modules/scheduler');
 //Import loadtTimerState to restore timer state on startup
 const {getTimerState, loadTimerState} = require('./modules/timerManager');
 
+//Import activity manager for score and activity routes
+const {getActivities, getDailyScore} = require('./modules/activityManager');
+
 //Import cors to allow mobile app to connect
 const cors = require('cors');
 
@@ -63,6 +66,19 @@ loadTimerState();
 startScheduler();
 //Enable CORS so the mobile app can connect to this server
 
+//Activities route 
+//Returns all activities logged today
+app.get('/activities', async (req, res) => {
+    const activities = await getActivities();
+    res.status(200).json(activities);
+});
+
+//Score route
+//Returns the total score for today
+app.get('/score', async (req, res) => {
+    const score = await getDailyScore();
+    res.status(200).json({ dailyScore : score });
+});
 //Start the server
 app.listen(PORT,() => {
     console.log(`Server running on port ${PORT}`);
