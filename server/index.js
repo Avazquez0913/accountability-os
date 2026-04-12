@@ -11,9 +11,6 @@ const {getUnlockState} = require('./modules/unlockManager');
 //import the scheduler to start the scheduled tasks
 const {startScheduler} = require('./modules/scheduler');
 
-//Import time manager to expose timer state
-const {getTimerState} = require('./modules/timerManager');
-
 //Import loadtTimerState to restore timer state on startup
 const {getTimerState, loadTimerState} = require('./modules/timerManager');
 
