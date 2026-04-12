@@ -23,7 +23,7 @@ const earnUnlock = async (reason, minutes) => {
     await redis.set(UNLOCK_KEY, JSON.stringify(unlockState));
 
     // Start the countdown timer with earned minutes
-    addMinutes(minutes);
+    await addMinutes(minutes);
 
     console.log(`Unlock earned! Reason: ${reason} | Minutes: ${minutes}`);
 };
@@ -34,7 +34,6 @@ const getUnlockState = async () => {
     // Get from Redis
     const data = await redis.get(UNLOCK_KEY);
 
-    
     // If nothing stored return default locked state
     if (!data) {
         return {
@@ -45,7 +44,6 @@ const getUnlockState = async () => {
         };
     }
 
-    // Redis may return string or object depending on client
     return data;
 };
 

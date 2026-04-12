@@ -14,6 +14,9 @@ const {startScheduler} = require('./modules/scheduler');
 //Import time manager to expose timer state
 const {getTimerState} = require('./modules/timerManager');
 
+//Import loadtTimerState to restore timer state on startup
+const {getTimerState, loadTimerState} = require('./modules/timerManager');
+
 //Create the express application
 const app = express();
 
@@ -51,6 +54,8 @@ app.get('/timer', (req, res) => {
 //We will move this to an environment variable later
 const PORT = 3000;
 
+//Restore timer state from Redis on server startup
+loadTimerState();
 //Start the scheduler to activate scheduled tasks
 startScheduler();
 
