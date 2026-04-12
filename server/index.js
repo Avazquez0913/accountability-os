@@ -14,6 +14,9 @@ const {startScheduler} = require('./modules/scheduler');
 //Import loadtTimerState to restore timer state on startup
 const {getTimerState, loadTimerState} = require('./modules/timerManager');
 
+//Import cors to allow mobile app to connect
+const cors = require('cors');
+
 //Create the express application
 const app = express();
 
@@ -55,7 +58,8 @@ const PORT = 3000;
 loadTimerState();
 //Start the scheduler to activate scheduled tasks
 startScheduler();
-
+//Enable CORS so the mobile app can connect to this server
+app.use(cors());
 //Start the server
 app.listen(PORT,() => {
     console.log(`Server running on port ${PORT}`);
