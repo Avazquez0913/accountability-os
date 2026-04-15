@@ -9,3 +9,11 @@ ENV/
 # Python bytecode
 __pycache__/
 *.py[cod]node_modules/
+node_modules/
+venv/
+__pycache__/
+*.pyc
+.env
+dist/
+build/
+.DS_Store
