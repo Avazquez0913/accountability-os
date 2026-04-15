@@ -1,0 +1,11 @@
+# Python virtual environment
+accountability-app/venv/
+venv/
+ENV/
+
+# macOS system files
+.DS_Store
+
+# Python bytecode
+__pycache__/
+*.py[cod]
