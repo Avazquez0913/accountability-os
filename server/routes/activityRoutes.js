@@ -7,6 +7,7 @@ const {
 } = require('../modules/activityManager');
 
 const { verifyEvidence } = require('../modules/nlpClient');
+const { checkLeetCode } = require('../modules/leetcodePoller');
 
 // Manual activity types (reading has its own NLP-verified endpoint)
 const ALLOWED_MANUAL_TYPES = ['workout', 'leetcode', 'job_apply'];
@@ -72,6 +73,16 @@ router.post('/activities/manual', async (req, res) => {
         res.status(201).json(record);
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// POST /api/check/leetcode — manually trigger a LeetCode poll
+router.post('/check/leetcode', async (req, res) => {
+    try {
+        await checkLeetCode();
+        res.status(200).json({ message: 'LeetCode check complete. See activity log for new solves.' });
+    } catch (error) {
+        res.status(500).json({ error: 'LeetCode check failed.' });
     }
 });
 

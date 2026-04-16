@@ -1,22 +1,28 @@
-//Responsibility: Handle all scheduled tasks
-//Currently handles the midnight reset of unlock state
-//New scheduled tasks get added here in the future
+// Responsibility: Handle all scheduled tasks
 
 const cron = require('node-cron');
-const {resetUnlock} = require('./unlockManager');
+const { resetUnlock } = require('./unlockManager');
+const { resetActivities } = require('./activityManager');
+const { checkLeetCode } = require('./leetcodePoller');
 
-//Schedule a task to run at midnight every day
-//Cron syntax: second minute hour day month weekday
-//'0 0 * * *' means "At 00:00 (midnight) every day"
 const startScheduler = () => {
 
+    // Midnight reset — clear activities, score, level, and unlock state
     cron.schedule('0 0 * * *', () => {
-        console.log('Midnight reset triggered - new day started');
+        console.log('Midnight reset triggered');
         resetUnlock();
+        resetActivities();
     });
 
-    console.log('Scheduler started - midnight reset active');
+    // LeetCode poll — check for new accepted submissions every hour
+    cron.schedule('0 * * * *', () => {
+        checkLeetCode();
+    });
+
+    // Run once on startup to catch any solves since last deploy
+    checkLeetCode();
+
+    console.log('Scheduler started — midnight reset + LeetCode polling active');
 };
 
-//Export the start function so index.js can call it
-module.exports = {startScheduler};
+module.exports = { startScheduler };

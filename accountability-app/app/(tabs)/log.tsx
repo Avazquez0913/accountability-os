@@ -22,6 +22,7 @@ export default function LogScreen() {
   const [settingLevel, setSettingLevel] = useState(false);
   const [loggingActivity, setLoggingActivity] = useState<string | null>(null);
   const [lastLogged, setLastLogged] = useState<string | null>(null);
+  const [checkingLeetCode, setCheckingLeetCode] = useState(false);
   const [readingModal, setReadingModal] = useState(false);
   const [readingClaim, setReadingClaim] = useState('');
   const [readingEvidence, setReadingEvidence] = useState('');
@@ -93,6 +94,19 @@ export default function LogScreen() {
     }
   };
 
+  const checkLeetCode = async () => {
+    try {
+      setCheckingLeetCode(true);
+      const res = await fetch(`${SERVER_URL}/api/check/leetcode`, { method: 'POST' });
+      const data = await res.json();
+      Alert.alert('LeetCode Check', data.message);
+    } catch {
+      Alert.alert('Error', 'Could not reach server.');
+    } finally {
+      setCheckingLeetCode(false);
+    }
+  };
+
   const activeLevel = currentLevel !== null ? LEVELS[currentLevel] : null;
 
   return (
@@ -142,6 +156,19 @@ export default function LogScreen() {
             {type === 'reading' && <Text style={styles.activityNote}>NLP verified</Text>}
           </TouchableOpacity>
         ))}
+      </View>
+
+      {/* LeetCode auto-check */}
+      <View style={styles.infoCard}>
+        <Text style={styles.infoTitle}>🧠 LeetCode Auto-Detection</Text>
+        <Text style={styles.infoText}>Solves are checked every hour automatically. Tap below to check right now.</Text>
+        <TouchableOpacity
+          style={[styles.checkBtn, checkingLeetCode && styles.busy]}
+          onPress={checkLeetCode}
+          disabled={checkingLeetCode}
+        >
+          <Text style={styles.checkBtnText}>{checkingLeetCode ? 'Checking...' : 'Check LeetCode Now'}</Text>
+        </TouchableOpacity>
       </View>
 
       {/* GitHub push info */}
@@ -214,7 +241,9 @@ const styles = StyleSheet.create({
   successMsg: { color: '#4caf50', fontSize: 13 },
   infoCard: { backgroundColor: '#111', borderRadius: 10, padding: 14, borderWidth: 1, borderColor: '#333', marginTop: 8 },
   infoTitle: { color: '#fff', fontSize: 14, fontWeight: '600', marginBottom: 4 },
-  infoText: { color: '#888', fontSize: 13 },
+  infoText: { color: '#888', fontSize: 13, marginBottom: 10 },
+  checkBtn: { backgroundColor: '#1a3a4a', borderRadius: 8, paddingVertical: 10, alignItems: 'center' },
+  checkBtnText: { color: '#fff', fontSize: 14, fontWeight: '600' },
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.85)', justifyContent: 'center', padding: 20 },
   modalBox: { backgroundColor: '#111', borderRadius: 14, padding: 20, borderWidth: 1, borderColor: '#333', gap: 10 },
   modalTitle: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
