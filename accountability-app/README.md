@@ -1,50 +1,56 @@
-# Welcome to your Expo app 👋
+# AccountabilityOS — Mobile App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+React Native app built with Expo. Connects to the live Railway backend.
 
-## Get started
+## Quick Start
 
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+### 1. Install dependencies
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 2. Start Expo
 
-## Learn more
+```bash
+npx expo start
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+### 3. Open on your phone
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- Install **Expo Go** from the App Store or Google Play
+- Make sure your phone and Mac are on the **same WiFi**
+- Scan the QR code shown in the terminal with your camera (iOS) or the Expo Go app (Android)
 
-## Join the community
+---
 
-Join our community of developers creating universal apps.
+## What You'll See
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### Today Tab
+- Lock / Unlock status badge
+- Screen time minutes remaining
+- Daily score (points earned today)
+- **Level picker** — set your difficulty for the day (Off / Survival / Standard / Relentless)
+- **Activity buttons** — tap to log Workout (+30), LeetCode (+30), Job Apply (+25)
+- **Reading button** — opens a modal where you describe what you studied; evidence is verified by the NLP pipeline before points are awarded
+
+### Weekly Tab
+- Current streak (consecutive active days)
+- 7-day bar chart showing each day's level
+- Distribution grid showing how many days at each level
+
+---
+
+## Troubleshooting
+
+**App shows "Loading..." indefinitely**
+- Check your WiFi — phone and Mac must be on the same network
+- Make sure the backend is up: open `https://accountability-os-production.up.railway.app/` in a browser, you should see `AccountabilityOS Server is running!`
+
+**Reading verification fails**
+- Be specific in the evidence field — describe what you actually learned, not just what topic you covered
+- The NLP model checks semantic similarity between your claim and evidence
+
+**Score doesn't update**
+- The app polls the server every 30 seconds — wait a moment after logging an activity
+- Or pull down to background the app and reopen it to force a refresh
