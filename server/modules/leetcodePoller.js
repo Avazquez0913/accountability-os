@@ -54,7 +54,7 @@ const checkLeetCode = async () => {
         // Nothing new since last check
         if (lastSeenId === latestId) {
             console.log('LeetCode: no new solves');
-            return;
+            return 0;
         }
 
         // Find all submissions newer than the last seen one
@@ -71,9 +71,11 @@ const checkLeetCode = async () => {
         // Update the last seen ID
         await redis.set(LAST_SEEN_KEY, latestId);
         console.log(`LeetCode: logged ${newSolves.length} new solve(s)`);
+        return newSolves.length;
 
     } catch (error) {
         console.error('LeetCode poll error:', error.message);
+        return 0;
     }
 };
 

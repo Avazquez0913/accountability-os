@@ -79,8 +79,8 @@ router.post('/activities/manual', async (req, res) => {
 // POST /api/check/leetcode — manually trigger a LeetCode poll
 router.post('/check/leetcode', async (req, res) => {
     try {
-        await checkLeetCode();
-        res.status(200).json({ message: 'LeetCode check complete. See activity log for new solves.' });
+        const count = await checkLeetCode();
+        res.status(200).json({ count });
     } catch (error) {
         res.status(500).json({ error: 'LeetCode check failed.' });
     }

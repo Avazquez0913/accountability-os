@@ -99,7 +99,13 @@ export default function LogScreen() {
       setCheckingLeetCode(true);
       const res = await fetch(`${SERVER_URL}/api/check/leetcode`, { method: 'POST' });
       const data = await res.json();
-      Alert.alert('LeetCode Check', data.message);
+      const count = data.count ?? 0;
+      Alert.alert(
+        count > 0 ? '🧠 LeetCode' : 'LeetCode',
+        count > 0
+          ? `${count} problem${count > 1 ? 's' : ''} solved today — +${count * 30} pts added!`
+          : '0 LeetCode problems solved today.'
+      );
     } catch {
       Alert.alert('Error', 'Could not reach server.');
     } finally {
