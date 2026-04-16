@@ -37,7 +37,7 @@ export default function WeeklyScreen() {
     </View>
   );
 
-  const { weekLevels, distribution, streak } = summary;
+  const { weekLevels = [], distribution = {}, streak = 0 } = summary;
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
